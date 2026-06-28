@@ -55,6 +55,10 @@
         overflow-x: hidden;
       }
 
+      body.is-loading {
+        overflow: hidden;
+      }
+
       img {
         display: block;
         max-width: 100%;
@@ -80,6 +84,11 @@
         transition: transform 180ms ease, box-shadow 180ms ease;
       }
 
+      .nav:hover,
+      .nav:focus-within {
+        box-shadow: 0 16px 34px rgba(21, 22, 26, 0.08);
+      }
+
       .nav.is-hidden {
         transform: translateY(-100%);
       }
@@ -92,6 +101,22 @@
         letter-spacing: 0;
         text-transform: uppercase;
         white-space: nowrap;
+      }
+
+      .brand:hover .brand-mark,
+      .brand:focus-visible .brand-mark {
+        transform: rotate(-4deg) scale(1.04);
+      }
+
+      .brand:hover .brand-mark::after,
+      .brand:focus-visible .brand-mark::after {
+        transform: translate(4px, -4px);
+      }
+
+      .brand:hover .brand-subtitle,
+      .brand:focus-visible .brand-subtitle {
+        color: var(--teal);
+        transform: translateX(4px);
       }
 
       .brand-mark {
@@ -115,6 +140,9 @@
         line-height: 1;
         isolation: isolate;
         text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+        transition:
+          transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 360ms ease;
       }
 
       .brand-mark::before,
@@ -135,6 +163,7 @@
         width: 18px;
         height: 18px;
         background: var(--blue);
+        transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       .brand-copy {
@@ -152,6 +181,98 @@
         font-size: 10px;
         font-weight: 900;
         letter-spacing: 0.16em;
+        transition:
+          color 240ms ease,
+          transform 240ms ease;
+      }
+
+      .page-loader {
+        position: fixed;
+        z-index: 100;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background:
+          linear-gradient(128deg, rgba(0, 166, 166, 0.15) 0 22%, transparent 22%),
+          linear-gradient(236deg, rgba(255, 90, 79, 0.14) 0 20%, transparent 20%),
+          var(--paper);
+        transition:
+          opacity 520ms ease,
+          visibility 520ms ease,
+          transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .page-loader.is-done {
+        opacity: 0;
+        transform: translateY(-100%);
+        visibility: hidden;
+      }
+
+      .loader-card {
+        display: grid;
+        justify-items: center;
+        gap: 20px;
+        text-align: center;
+        transform: translateY(14px) scale(0.96);
+        opacity: 0;
+        animation: loaderCardIn 760ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
+      }
+
+      .loader-logo {
+        display: grid;
+        width: clamp(96px, 18vw, 142px);
+        aspect-ratio: 1;
+        place-items: center;
+        background:
+          linear-gradient(135deg, var(--teal) 0 38%, transparent 38%),
+          linear-gradient(45deg, var(--saffron) 0 38%, transparent 38%),
+          linear-gradient(135deg, transparent 0 58%, var(--coral) 58%),
+          var(--white);
+        box-shadow:
+          inset 0 0 0 18px rgba(255, 255, 255, 0.82),
+          0 24px 70px rgba(21, 22, 26, 0.18);
+        color: var(--ink);
+        font-size: clamp(28px, 5vw, 44px);
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .loader-title {
+        margin: 0;
+        font-size: clamp(24px, 5vw, 58px);
+        font-weight: 900;
+        line-height: 0.95;
+        text-transform: uppercase;
+      }
+
+      .loader-marquee {
+        width: min(520px, 82vw);
+        overflow: hidden;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .loader-marquee span {
+        display: inline-block;
+        min-width: max-content;
+        animation: loaderMarquee 4.8s linear infinite;
+      }
+
+      @keyframes loaderCardIn {
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes loaderMarquee {
+        to {
+          transform: translateX(-50%);
+        }
       }
 
       .nav-links {
@@ -163,9 +284,62 @@
         font-weight: 700;
       }
 
+      .nav-links a {
+        position: relative;
+        padding-block: 6px;
+      }
+
+      .nav-links a::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: var(--saffron);
+        content: "";
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
       .nav-links a:hover,
       .nav-links a:focus-visible {
         color: var(--ink);
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a:focus-visible::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      .nav .button.gold {
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 220ms ease,
+          box-shadow 220ms ease;
+      }
+
+      .nav .button.gold::before {
+        position: absolute;
+        inset: -30% auto -30% -65%;
+        width: 52%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.62), transparent);
+        content: "";
+        transform: skewX(-18deg);
+        transition: left 560ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .nav .button.gold:hover,
+      .nav .button.gold:focus-visible {
+        box-shadow: 0 12px 24px rgba(245, 184, 65, 0.32);
+        transform: translateY(-2px);
+      }
+
+      .nav .button.gold:hover::before,
+      .nav .button.gold:focus-visible::before {
+        left: 112%;
       }
 
       .button {
@@ -200,6 +374,47 @@
 
       .section {
         padding: clamp(70px, 9vw, 130px) clamp(20px, 4vw, 54px);
+      }
+
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 640ms ease,
+          transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: var(--reveal-delay, 0ms);
+        will-change: opacity, transform;
+      }
+
+      .reveal-item.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .reveal-item {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        .page-loader {
+          display: none;
+        }
+
+        .brand-mark,
+        .brand-mark::after,
+        .brand-subtitle,
+        .nav-links a::after,
+        .nav .button.gold,
+        .nav .button.gold::before {
+          transform: none;
+          transition: none;
+        }
       }
 
       .inner {
@@ -840,7 +1055,17 @@
       }
     </style>
   </head>
-  <body>
+  <body class="is-loading">
+    <div class="page-loader" data-page-loader aria-hidden="true">
+      <div class="loader-card">
+        <div class="loader-logo">GDI</div>
+        <p class="loader-title">Graphic Design Israel</p>
+        <div class="loader-marquee">
+          <span>Websites / Branding / Print / Packaging / Social / SEO / Websites / Branding / Print / Packaging / Social / SEO / </span>
+        </div>
+      </div>
+    </div>
+
     <header class="nav" data-nav>
       <a class="brand" href="#top" aria-label="Graphic Design Israel home">
         <span class="brand-mark" aria-hidden="true">GDI</span>
@@ -1286,6 +1511,25 @@
     </footer>
 
     <script>
+      const pageLoader = document.querySelector("[data-page-loader]");
+
+      const finishPageLoad = () => {
+        if (!pageLoader) {
+          return;
+        }
+
+        pageLoader.classList.add("is-done");
+        document.body.classList.remove("is-loading");
+      };
+
+      window.addEventListener("load", () => {
+        window.setTimeout(finishPageLoad, 1050);
+      });
+
+      window.setTimeout(finishPageLoad, 2200);
+
+      pageLoader?.addEventListener("click", finishPageLoad);
+
       const nav = document.querySelector("[data-nav]");
       let lastScroll = window.scrollY;
 
@@ -1325,10 +1569,56 @@
       });
 
       document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          finishPageLoad();
+        }
+
         if (event.key === "Escape" && !contactModal.hidden) {
           closeContact();
         }
       });
+
+      const revealGroups = [
+        ".section-head",
+        ".sample-card",
+        ".proof-stat",
+        ".logo-cell",
+        ".package",
+        ".step",
+        ".review-card",
+        ".case-card",
+        ".service-row",
+        ".faq-grid details",
+        ".final-cta .eyebrow",
+        ".final-cta h2",
+        ".final-cta .lead",
+        ".final-cta .cta-row"
+      ];
+
+      const revealItems = document.querySelectorAll(revealGroups.join(","));
+
+      revealItems.forEach((item, index) => {
+        item.classList.add("reveal-item");
+        item.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 70}ms`);
+      });
+
+      if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          rootMargin: "0px 0px -12% 0px",
+          threshold: 0.16
+        });
+
+        revealItems.forEach((item) => revealObserver.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
+      }
     </script>
   </body>
 </html>
