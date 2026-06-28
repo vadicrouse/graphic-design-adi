@@ -59,6 +59,23 @@
         overflow: hidden;
       }
 
+      body.language-changing::before {
+        position: fixed;
+        z-index: 90;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(118deg, var(--teal) 0 28%, var(--saffron) 28% 54%, var(--coral) 54% 76%, var(--blue) 76%);
+        clip-path: inset(0 100% 0 0);
+        content: "";
+        animation: languageWipe 760ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      [dir="rtl"] body.language-changing::before {
+        clip-path: inset(0 0 0 100%);
+        animation-name: languageWipeRtl;
+      }
+
       img {
         display: block;
         max-width: 100%;
@@ -91,6 +108,12 @@
 
       .nav.is-hidden {
         transform: translateY(-100%);
+      }
+
+      .nav-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
       }
 
       .brand {
@@ -342,6 +365,178 @@
         left: 112%;
       }
 
+      .language-menu {
+        position: relative;
+      }
+
+      .language-toggle {
+        display: inline-grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border: 2px solid var(--ink);
+        background:
+          linear-gradient(135deg, rgba(0, 166, 166, 0.12), transparent 46%),
+          var(--white);
+        cursor: pointer;
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+        font-size: 22px;
+        line-height: 1;
+        transform-origin: 50% 70%;
+        transition:
+          transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 220ms ease,
+          background 220ms ease;
+      }
+
+      .language-toggle:hover,
+      .language-toggle:focus-visible,
+      .language-menu.is-open .language-toggle {
+        box-shadow: 0 12px 24px rgba(21, 22, 26, 0.12);
+        transform: translateY(-2px) rotate(-4deg);
+      }
+
+      .language-toggle.is-stamping {
+        animation: flagStamp 540ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .language-options {
+        position: absolute;
+        top: calc(100% + 9px);
+        right: 0;
+        display: grid;
+        gap: 6px;
+        min-width: 164px;
+        padding: 10px;
+        background:
+          linear-gradient(145deg, rgba(245, 184, 65, 0.18), rgba(255, 255, 255, 0) 42%),
+          var(--white);
+        box-shadow: 0 18px 42px rgba(21, 22, 26, 0.14);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-8px) rotate(2deg) scale(0.96);
+        transform-origin: top right;
+        transition:
+          opacity 220ms ease,
+          transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .language-menu.is-open .language-options {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+
+      .language-option {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 900;
+        padding: 9px 10px;
+        text-align: left;
+        transform: translateY(-4px);
+        opacity: 0;
+        transition:
+          background 180ms ease,
+          transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 180ms ease;
+      }
+
+      .language-flag {
+        display: inline-grid;
+        width: 28px;
+        height: 28px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--white);
+        box-shadow: inset 0 0 0 1px rgba(21, 22, 26, 0.08);
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .language-menu.is-open .language-option {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .language-menu.is-open .language-option:nth-child(2) {
+        transition-delay: 35ms;
+      }
+
+      .language-menu.is-open .language-option:nth-child(3) {
+        transition-delay: 70ms;
+      }
+
+      .language-menu.is-open .language-option:nth-child(4) {
+        transition-delay: 105ms;
+      }
+
+      .language-option:hover,
+      .language-option:focus-visible,
+      .language-option.is-active {
+        background: var(--mint);
+      }
+
+      [dir="rtl"] .language-options {
+        right: auto;
+        left: 0;
+        transform-origin: top left;
+      }
+
+      @keyframes flagStamp {
+        0% {
+          transform: translateY(-2px) rotate(-4deg) scale(1);
+        }
+
+        38% {
+          transform: translateY(4px) rotate(0deg) scale(0.88);
+          box-shadow: 0 4px 10px rgba(21, 22, 26, 0.14);
+        }
+
+        72% {
+          transform: translateY(-3px) rotate(3deg) scale(1.08);
+        }
+
+        100% {
+          transform: translateY(0) rotate(0deg) scale(1);
+        }
+      }
+
+      @keyframes languageWipe {
+        0% {
+          clip-path: inset(0 100% 0 0);
+        }
+
+        42% {
+          clip-path: inset(0 0 0 0);
+        }
+
+        100% {
+          clip-path: inset(0 0 0 100%);
+        }
+      }
+
+      @keyframes languageWipeRtl {
+        0% {
+          clip-path: inset(0 0 0 100%);
+        }
+
+        42% {
+          clip-path: inset(0 0 0 0);
+        }
+
+        100% {
+          clip-path: inset(0 100% 0 0);
+        }
+      }
+
       .button {
         display: inline-flex;
         min-height: 44px;
@@ -411,7 +606,9 @@
         .brand-subtitle,
         .nav-links a::after,
         .nav .button.gold,
-        .nav .button.gold::before {
+        .nav .button.gold::before,
+        .language-toggle,
+        .language-options {
           transform: none;
           transition: none;
         }
@@ -556,8 +753,10 @@
 
       .sample-card {
         display: grid;
-        gap: 18px;
         align-content: start;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: 0 16px 38px rgba(21, 22, 26, 0.08);
       }
 
       .sample-card img {
@@ -567,9 +766,69 @@
         object-fit: cover;
       }
 
+      .sample-body {
+        display: grid;
+        gap: 16px;
+        padding: 22px;
+      }
+
+      .sample-kicker {
+        display: inline-block;
+        width: fit-content;
+        background: var(--ink);
+        color: var(--white);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        padding: 6px 9px;
+        text-transform: uppercase;
+      }
+
+      .sample-card h3 {
+        font-size: clamp(22px, 2vw, 29px);
+        margin-bottom: 8px;
+      }
+
       .sample-card p {
         color: var(--muted);
         margin-bottom: 0;
+      }
+
+      .sample-brief {
+        display: grid;
+        gap: 10px;
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+      }
+
+      .sample-brief strong {
+        font-size: 15px;
+      }
+
+      .sample-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .sample-tags span {
+        background: var(--mint);
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 800;
+        padding: 6px 8px;
+      }
+
+      .sample-card:nth-child(3n + 2) .sample-tags span {
+        background: var(--sky);
+      }
+
+      .sample-card:nth-child(3n) .sample-tags span {
+        background: rgba(245, 184, 65, 0.28);
+      }
+
+      .sample-card .mini-link {
+        margin-top: 2px;
       }
 
       .mini-link {
@@ -581,35 +840,6 @@
         color: var(--ink);
         font-size: 13px;
         font-weight: 900;
-        text-transform: uppercase;
-      }
-
-      .proof-band {
-        background: var(--mint);
-        border-block: 1px solid var(--line);
-      }
-
-      .proof-grid {
-        display: grid;
-        align-items: center;
-        gap: clamp(32px, 6vw, 70px);
-        grid-template-columns: minmax(0, 0.8fr) minmax(360px, 1fr);
-      }
-
-      .logo-grid {
-        display: grid;
-        gap: 14px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .logo-cell {
-        display: grid;
-        min-height: 86px;
-        place-items: center;
-        background: rgba(255, 255, 255, 0.58);
-        color: var(--ink);
-        font-weight: 900;
-        text-align: center;
         text-transform: uppercase;
       }
 
@@ -700,28 +930,6 @@
         padding: clamp(20px, 3vw, 34px);
       }
 
-      .review-tabs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        border-bottom: 2px solid var(--line);
-        margin-bottom: 24px;
-        padding-bottom: 16px;
-      }
-
-      .tab {
-        border: 2px solid var(--line);
-        background: var(--white);
-        font-weight: 800;
-        padding: 8px 12px;
-      }
-
-      .tab.active {
-        border-color: var(--ink);
-        background: var(--ink);
-        color: var(--white);
-      }
-
       .rating-row {
         display: flex;
         flex-wrap: wrap;
@@ -777,58 +985,6 @@
       }
 
       .review-card p {
-        color: var(--muted);
-        margin-bottom: 0;
-      }
-
-      .case-grid {
-        display: grid;
-        gap: 22px;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .case-card {
-        background: var(--white);
-        box-shadow: 0 16px 38px rgba(21, 22, 26, 0.08);
-      }
-
-      .case-card img {
-        aspect-ratio: 1.48;
-        object-fit: cover;
-      }
-
-      .case-body {
-        padding: 24px;
-      }
-
-      .result {
-        display: inline-block;
-        background: var(--saffron);
-        font-weight: 900;
-        margin-bottom: 12px;
-        padding: 6px 10px;
-      }
-
-      .library {
-        background: var(--white);
-      }
-
-      .service-list {
-        display: grid;
-        gap: 0;
-        border-top: 1px solid var(--line);
-      }
-
-      .service-row {
-        display: grid;
-        align-items: center;
-        gap: 24px;
-        grid-template-columns: 0.7fr 1fr auto;
-        border-bottom: 1px solid var(--line);
-        padding: 24px 0;
-      }
-
-      .service-row p {
         color: var(--muted);
         margin-bottom: 0;
       }
@@ -970,10 +1126,8 @@
         }
 
         .hero-grid,
-        .proof-grid,
         .packages,
         .steps,
-        .case-grid,
         .faq-grid {
           grid-template-columns: 1fr;
         }
@@ -990,9 +1144,6 @@
           column-count: 2;
         }
 
-        .service-row {
-          grid-template-columns: 1fr;
-        }
       }
 
       @media (max-width: 640px) {
@@ -1018,7 +1169,6 @@
 
         .hero-proof,
         .sample-grid,
-        .logo-grid,
         .review-grid {
           display: grid;
           grid-template-columns: 1fr;
@@ -1033,6 +1183,16 @@
           min-height: 38px;
           width: auto;
           padding: 8px 12px;
+        }
+
+        .nav-actions {
+          gap: 8px;
+        }
+
+        .language-toggle {
+          width: 38px;
+          height: 38px;
+          font-size: 17px;
         }
 
         .brand-mark {
@@ -1078,9 +1238,20 @@
         <a href="#samples">Samples</a>
         <a href="#packages">Packages</a>
         <a href="#reviews">Reviews</a>
-        <a href="#services">Services</a>
+        <a href="#faq">FAQ</a>
       </nav>
-      <a class="button gold" href="#contact-form" data-open-contact>Start</a>
+      <div class="nav-actions">
+        <a class="button gold" href="#contact-form" data-open-contact>Start</a>
+        <div class="language-menu" data-language-menu>
+          <button class="language-toggle" type="button" aria-label="Change language" aria-expanded="false" data-language-toggle>🇺🇸</button>
+          <div class="language-options" role="menu" aria-label="Language options">
+            <button class="language-option is-active" type="button" role="menuitem" data-language-option="en"><span class="language-flag" aria-hidden="true">🇺🇸</span> English</button>
+            <button class="language-option" type="button" role="menuitem" data-language-option="he"><span class="language-flag" aria-hidden="true">🇮🇱</span> עברית</button>
+            <button class="language-option" type="button" role="menuitem" data-language-option="zh"><span class="language-flag" aria-hidden="true">🇨🇳</span> 中文</button>
+            <button class="language-option" type="button" role="menuitem" data-language-option="fr"><span class="language-flag" aria-hidden="true">🇫🇷</span> Français</button>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main id="top">
@@ -1126,83 +1297,125 @@
               <h2>Choose by what you need made.</h2>
             </div>
             <p class="lead">
-              The site should show actual work surfaces: screens, boards, packaging,
-              print pieces, ads, and dashboards instead of abstract service icons.
+              Use these as starter briefs: concrete, recognizable projects that show
+              the kind of work a business can ask for before the final portfolio is filled.
             </p>
           </div>
           <div class="sample-grid">
             <article class="sample-card">
-              <img src="assets/sample-web.png" alt="Website design sample shown on a desktop preview.">
-              <div>
-                <h3>Website Design</h3>
-                <p>Conversion-focused sites with modern layouts, fast pages, and clear calls to action.</p>
+              <img src="assets/sample-web-photo.jpg" alt="Polished clinic website mockup shown on a laptop with booking and service visuals.">
+              <div class="sample-body">
+                <span class="sample-kicker">Starter brief</span>
+                <div>
+                  <h3>Bilingual clinic lead-gen site.</h3>
+                  <p>A warm Hebrew/English site for a private clinic with services, doctor profile, insurance notes, and a fast booking path.</p>
+                </div>
+                <div class="sample-brief">
+                  <strong>Useful pieces to show</strong>
+                  <div class="sample-tags" aria-label="Website starter brief deliverables">
+                    <span>Homepage</span>
+                    <span>Service pages</span>
+                    <span>Booking CTA</span>
+                  </div>
+                </div>
+                <a class="mini-link" href="#packages">More about websites</a>
               </div>
-              <a class="mini-link" href="#packages">More about websites</a>
             </article>
             <article class="sample-card">
-              <img src="assets/sample-brand.png" alt="Brand identity sample board with colors and typography.">
-              <div>
-                <h3>Brand Identity</h3>
-                <p>Logo systems, palettes, type, and visual rules that make everything feel connected.</p>
+              <img src="assets/sample-brand-photo.jpg" alt="Cafe identity kit mockup with menu cards, color palette, cup, and storefront materials.">
+              <div class="sample-body">
+                <span class="sample-kicker">Starter brief</span>
+                <div>
+                  <h3>Tel Aviv cafe identity kit.</h3>
+                  <p>A compact brand system for a cafe launch: logo lockup, color palette, menu type, window decal, and social profile set.</p>
+                </div>
+                <div class="sample-brief">
+                  <strong>Useful pieces to show</strong>
+                  <div class="sample-tags" aria-label="Brand identity starter brief deliverables">
+                    <span>Logo rules</span>
+                    <span>Menu style</span>
+                    <span>Storefront mockup</span>
+                  </div>
+                </div>
+                <a class="mini-link" href="#packages">More about branding</a>
               </div>
-              <a class="mini-link" href="#services">More about branding</a>
             </article>
             <article class="sample-card">
-              <img src="assets/sample-print.png" alt="Printed brochure spread sample.">
-              <div>
-                <h3>Print and Brochures</h3>
-                <p>Business cards, flyers, brochures, menus, decks, and printed sales material.</p>
+              <img src="assets/sample-print-photo.jpg" alt="Boutique hotel welcome print pack with guide, cards, map, envelope, and key card.">
+              <div class="sample-body">
+                <span class="sample-kicker">Starter brief</span>
+                <div>
+                  <h3>Boutique hotel welcome pack.</h3>
+                  <p>A tactile guest bundle with a folded area guide, breakfast card, room insert, and small map for local recommendations.</p>
+                </div>
+                <div class="sample-brief">
+                  <strong>Useful pieces to show</strong>
+                  <div class="sample-tags" aria-label="Print starter brief deliverables">
+                    <span>Brochure</span>
+                    <span>Guest cards</span>
+                    <span>Print files</span>
+                  </div>
+                </div>
+                <a class="mini-link" href="#packages">More about print</a>
               </div>
-              <a class="mini-link" href="#services">More about print</a>
             </article>
             <article class="sample-card">
-              <img src="assets/sample-packaging.png" alt="Packaging design sample with product boxes.">
-              <div>
-                <h3>Packaging Design</h3>
-                <p>Labels, product boxes, stickers, mockups, and visual systems for physical products.</p>
+              <img src="assets/sample-packaging-photo.jpg" alt="Dead Sea skincare packaging family with bottles, jars, labels, and matching boxes.">
+              <div class="sample-body">
+                <span class="sample-kicker">Starter brief</span>
+                <div>
+                  <h3>Dead Sea skincare label family.</h3>
+                  <p>A shelf-ready packaging system for three products with labels, box faces, ingredient hierarchy, and launch mockups.</p>
+                </div>
+                <div class="sample-brief">
+                  <strong>Useful pieces to show</strong>
+                  <div class="sample-tags" aria-label="Packaging starter brief deliverables">
+                    <span>Label system</span>
+                    <span>Box mockups</span>
+                    <span>SKU rules</span>
+                  </div>
+                </div>
+                <a class="mini-link" href="#packages">More about packaging</a>
               </div>
-              <a class="mini-link" href="#services">More about packaging</a>
             </article>
             <article class="sample-card">
-              <img src="assets/sample-social.png" alt="Social ad creative sample cards.">
-              <div>
-                <h3>Social and Ads</h3>
-                <p>Campaign graphics, posts, stories, banners, and offer visuals that are ready to run.</p>
+              <img src="assets/sample-social-photo.jpg" alt="Fitness studio social campaign mockup with phone screens, post cards, stories, and ad layouts.">
+              <div class="sample-body">
+                <span class="sample-kicker">Starter brief</span>
+                <div>
+                  <h3>Fitness studio launch month.</h3>
+                  <p>A punchy campaign set for a new class schedule: offer posts, story frames, retargeting banners, and trainer quote cards.</p>
+                </div>
+                <div class="sample-brief">
+                  <strong>Useful pieces to show</strong>
+                  <div class="sample-tags" aria-label="Social ads starter brief deliverables">
+                    <span>Feed posts</span>
+                    <span>Story frames</span>
+                    <span>Ad variants</span>
+                  </div>
+                </div>
+                <a class="mini-link" href="#packages">More about ads</a>
               </div>
-              <a class="mini-link" href="#services">More about ads</a>
             </article>
             <article class="sample-card">
-              <img src="assets/sample-seo.png" alt="SEO and analytics dashboard sample.">
-              <div>
-                <h3>SEO and Growth Pages</h3>
-                <p>Landing pages, service pages, local SEO pages, content design, and reporting visuals.</p>
+              <img src="assets/sample-seo-photo.jpg" alt="Local SEO page library mockup with dashboard, page template cards, map pins, and report visuals.">
+              <div class="sample-body">
+                <span class="sample-kicker">Starter brief</span>
+                <div>
+                  <h3>Local service page library.</h3>
+                  <p>A scalable set of city and service pages with search-friendly structure, proof blocks, FAQs, and simple reporting visuals.</p>
+                </div>
+                <div class="sample-brief">
+                  <strong>Useful pieces to show</strong>
+                  <div class="sample-tags" aria-label="SEO growth pages starter brief deliverables">
+                    <span>Page templates</span>
+                    <span>FAQ blocks</span>
+                    <span>Report visuals</span>
+                  </div>
+                </div>
+                <a class="mini-link" href="#packages">More about growth</a>
               </div>
-              <a class="mini-link" href="#services">More about growth</a>
             </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section proof-band">
-        <div class="inner proof-grid">
-          <div>
-            <p class="eyebrow">Proof below the samples</p>
-            <h2>Trusted-by should feel like evidence, not decoration.</h2>
-            <p class="lead">
-              This band is reserved for real client logos, awards, press, platform badges,
-              partner marks, and recognizable proof as the portfolio grows.
-            </p>
-          </div>
-          <div class="logo-grid" aria-label="Example trusted-by logo grid">
-            <div class="logo-cell">Local Retail</div>
-            <div class="logo-cell">B2B Service</div>
-            <div class="logo-cell">Medical</div>
-            <div class="logo-cell">Hospitality</div>
-            <div class="logo-cell">Nonprofit</div>
-            <div class="logo-cell">Startup</div>
-            <div class="logo-cell">Real Estate</div>
-            <div class="logo-cell">Food Brand</div>
-            <div class="logo-cell">Creator</div>
           </div>
         </div>
       </section>
@@ -1212,9 +1425,9 @@
           <div class="section-head">
             <div>
               <p class="eyebrow">Ways to work</p>
-              <h2>Clear packages for the most common jobs.</h2>
+              <h2>Clear ways to start.</h2>
             </div>
-            <p class="lead">Pick a starting lane. Scope can expand when the project needs it.</p>
+            <p class="lead">Choose the lane closest to what you need. Scope can stay focused or grow into a fuller design system.</p>
           </div>
           <div class="packages">
             <article class="package">
@@ -1230,10 +1443,10 @@
             <article class="package featured">
               <h3>Brand + Web</h3>
               <div class="price">Core</div>
-              <p>The main offer: identity, site, proof sections, and conversion-ready content blocks.</p>
+              <p>The main offer: identity, site structure, sample visuals, and conversion-ready content blocks.</p>
               <ul class="list">
                 <li>Visual identity direction and sample system</li>
-                <li>Website, samples grid, trusted proof, reviews</li>
+                <li>Website, samples grid, reviews, and calls to action</li>
                 <li>Copy structure for services and calls to action</li>
               </ul>
             </article>
@@ -1269,7 +1482,7 @@
             <article class="step">
               <strong>02</strong>
               <h3>Map</h3>
-              <p>Decide the site structure, proof sections, services, packages, and conversion paths.</p>
+              <p>Decide the structure, priority offer, must-have visuals, and the clearest path to contact.</p>
             </article>
             <article class="step">
               <strong>03</strong>
@@ -1290,17 +1503,11 @@
           <div class="section-head">
             <div>
               <p class="eyebrow">Review wall</p>
-              <h2>Make trust visible in volume.</h2>
+              <h2>Trust should feel specific.</h2>
             </div>
-            <p class="lead">Inspired by dense third-party review walls: source filters, rating summary, and real client cards.</p>
+            <p class="lead">A few direct notes are stronger than a long wall of placeholder praise.</p>
           </div>
           <div class="reviews-panel">
-            <div class="review-tabs" aria-label="Review source filters">
-              <span class="tab active">All reviews 5.0</span>
-              <span class="tab">Google 5.0</span>
-              <span class="tab">Facebook 5.0</span>
-              <span class="tab">Client notes</span>
-            </div>
             <div class="rating-row">
               <div>
                 <strong>Excellent</strong>
@@ -1325,121 +1532,35 @@
                 <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                 <p>The packaging mockups and ad creative helped us see the product line before we spent money printing.</p>
               </article>
-              <article class="review-card">
-                <div class="review-top"><span class="avatar">S</span><strong>Service Business</strong><span class="source">G</span></div>
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p>Our old site had words. The new one has proof, samples, packages, and a real path to booking.</p>
-              </article>
-              <article class="review-card">
-                <div class="review-top"><span class="avatar">N</span><strong>Nonprofit Team</strong><span class="source">C</span></div>
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p>Clear process, fast iterations, and a visual system we can keep using after launch.</p>
-              </article>
-              <article class="review-card">
-                <div class="review-top"><span class="avatar">D</span><strong>Design Desk Client</strong><span class="source">G</span></div>
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p>Having one place for web, social, print, and brand work removed the chaos from our marketing.</p>
-              </article>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="inner">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">Case study cards</p>
-              <h2>Pretty is not enough. Show the result.</h2>
-            </div>
-            <p class="lead">Case cards should pair a visual surface with a practical business outcome.</p>
-          </div>
-          <div class="case-grid">
-            <article class="case-card">
-              <img src="assets/sample-web.png" alt="Website case study preview.">
-              <div class="case-body">
-                <span class="result">Lead-gen rebuild</span>
-                <h3>Service site that sells the offer faster.</h3>
-                <p>Reworked the hierarchy around proof, packages, and booking paths.</p>
-              </div>
-            </article>
-            <article class="case-card">
-              <img src="assets/sample-brand.png" alt="Brand case study preview.">
-              <div class="case-body">
-                <span class="result">Brand system</span>
-                <h3>A small identity kit that scales across channels.</h3>
-                <p>Colors, type, logo usage, social templates, and print-ready assets.</p>
-              </div>
-            </article>
-            <article class="case-card">
-              <img src="assets/sample-social.png" alt="Campaign case study preview.">
-              <div class="case-body">
-                <span class="result">Campaign sprint</span>
-                <h3>Ad creative built for speed and consistency.</h3>
-                <p>Reusable formats for offers, launches, local campaigns, and retargeting.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section library" id="services">
-        <div class="inner">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">Service library</p>
-              <h2>Everything can connect to the same visual system.</h2>
-            </div>
-          </div>
-          <div class="service-list">
-            <article class="service-row">
-              <h3>Websites and landing pages</h3>
-              <p>Marketing sites, service pages, local SEO pages, forms, calls to action, and responsive launch QA.</p>
-              <a class="mini-link" href="#contact-form" data-open-contact>Start</a>
-            </article>
-            <article class="service-row">
-              <h3>Branding and logo systems</h3>
-              <p>Logo lockups, typography, color palettes, brand rules, social templates, and visual direction.</p>
-              <a class="mini-link" href="#contact-form" data-open-contact>Start</a>
-            </article>
-            <article class="service-row">
-              <h3>Print, packaging, and sales material</h3>
-              <p>Business cards, brochures, flyers, menus, product packaging, labels, pitch decks, and trade show graphics.</p>
-              <a class="mini-link" href="#contact-form" data-open-contact>Start</a>
-            </article>
-            <article class="service-row">
-              <h3>Ads, social, and growth creative</h3>
-              <p>Campaign graphics, paid social assets, banners, email visuals, content design, SEO reports, and launch kits.</p>
-              <a class="mini-link" href="#contact-form" data-open-contact>Start</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
+      <section class="section" id="faq">
         <div class="inner">
           <div class="section-head">
             <div>
               <p class="eyebrow">FAQ</p>
-              <h2>Answer the questions before they slow the sale.</h2>
+              <h2>Quick answers before we start.</h2>
             </div>
           </div>
           <div class="faq-grid">
             <details open>
-              <summary>Can this be one big site with many functions?</summary>
-              <p>Yes. The site can start as a clean static marketing site, then grow into portfolio filters, quote forms, review feeds, case study pages, and service-specific funnels.</p>
+              <summary>Can you handle both the website and the design assets?</summary>
+              <p>Yes. The goal is one connected visual system across the site, brand, print pieces, social graphics, ads, and launch material.</p>
             </details>
             <details>
-              <summary>Do we need real samples?</summary>
-              <p>Real samples will make this much stronger. Until then, the page uses original placeholder mockups so the structure is ready.</p>
+              <summary>What if I only need one thing?</summary>
+              <p>That works. A project can start with a landing page, logo refresh, menu, brochure, packaging label, or campaign pack.</p>
             </details>
             <details>
-              <summary>Where should reviews come from?</summary>
-              <p>Best source is Google Business Profile, then Facebook, then hand-picked client quotes. We can design the wall now and wire live data later.</p>
+              <summary>Do I need everything ready before contacting you?</summary>
+              <p>No. Send what you have: goals, old files, references, photos, notes, or even a rough idea. The first step is organizing the direction.</p>
             </details>
             <details>
-              <summary>Can packages change?</summary>
-              <p>Absolutely. The first draft uses starter/core/ongoing lanes so the page has a sales structure while we refine pricing and scope.</p>
+              <summary>Can the package change after we talk?</summary>
+              <p>Absolutely. The package is just a starting lane. After a short review, the scope can be trimmed, expanded, or split into phases.</p>
             </details>
           </div>
         </div>
@@ -1448,11 +1569,11 @@
       <section class="section final-cta">
         <div class="inner">
           <p class="eyebrow">Next step</p>
-          <h2>Build the mega-site one sharp section at a time.</h2>
-          <p class="lead">We already have the samples grid, trusted proof concept, review wall, packages, process, case cards, and service library scaffolded.</p>
+          <h2>Start with the piece your business needs next.</h2>
+          <p class="lead">Send a few details and we will point you toward the clearest first move.</p>
           <div class="cta-row" style="justify-content: center;">
-            <a class="button" href="#contact-form" data-open-contact>Start the site</a>
-            <a class="button alt" href="#samples">Review sections</a>
+            <a class="button" href="#contact-form" data-open-contact>Start a project</a>
+            <a class="button alt" href="#samples">View samples</a>
           </div>
         </div>
       </section>
@@ -1530,6 +1651,267 @@
 
       pageLoader?.addEventListener("click", finishPageLoad);
 
+      const languageMeta = {
+        en: { flag: "🇺🇸", lang: "en", dir: "ltr" },
+        he: { flag: "🇮🇱", lang: "he", dir: "rtl" },
+        zh: { flag: "🇨🇳", lang: "zh-Hans", dir: "ltr" },
+        fr: { flag: "🇫🇷", lang: "fr", dir: "ltr" }
+      };
+
+      const translations = {
+        zh: {},
+        fr: {},
+        he: {
+          "Graphic Design Israel": "גרפיק דיזיין ישראל",
+          "Creative studio": "סטודיו קריאייטיב",
+          "Samples": "דוגמאות",
+          "Packages": "חבילות",
+          "Reviews": "ביקורות",
+          "FAQ": "שאלות",
+          "Start": "התחלה",
+          "Graphic design, web, print, and growth": "עיצוב גרפי, אתרים, דפוס וצמיחה",
+          "One studio for every visual thing your business needs.": "סטודיו אחד לכל מה שהעסק שלכם צריך מבחינה ויזואלית.",
+          "Websites, brand identity, packaging, ads, SEO pages, print collateral, social graphics, and ongoing design support built around real samples and proof.": "אתרים, זהות מותג, אריזות, מודעות, דפי SEO, חומרי דפוס, גרפיקות לרשתות ותמיכת עיצוב שוטפת סביב דוגמאות והוכחות אמיתיות.",
+          "See Samples": "ראו דוגמאות",
+          "View Packages": "ראו חבילות",
+          "9": "9",
+          "core design disciplines": "תחומי עיצוב מרכזיים",
+          "1": "1",
+          "connected visual system": "מערכת ויזואלית מחוברת",
+          "0": "0",
+          "generic icon-only service blocks": "בלוקים גנריים של אייקונים בלבד",
+          "Samples first": "קודם דוגמאות",
+          "Choose by what you need made.": "בחרו לפי מה שצריך ליצור.",
+          "Use these as starter briefs: concrete, recognizable projects that show the kind of work a business can ask for before the final portfolio is filled.": "השתמשו בזה כבריף פתיחה: פרויקטים מוחשיים וברורים שמראים איזה סוג עבודה עסק יכול לבקש עוד לפני שהתיק עבודות מלא.",
+          "Starter brief": "בריף פתיחה",
+          "Bilingual clinic lead-gen site.": "אתר דו-לשוני לקליניקה שמביא פניות.",
+          "A warm Hebrew/English site for a private clinic with services, doctor profile, insurance notes, and a fast booking path.": "אתר חם בעברית ובאנגלית לקליניקה פרטית עם שירותים, פרופיל רופא, מידע על ביטוחים ודרך מהירה לקביעת תור.",
+          "Useful pieces to show": "מה כדאי להציג",
+          "Homepage": "דף בית",
+          "Service pages": "דפי שירות",
+          "Booking CTA": "קריאה לקביעת תור",
+          "More about websites": "עוד על אתרים",
+          "Tel Aviv cafe identity kit.": "ערכת זהות לבית קפה בתל אביב.",
+          "A compact brand system for a cafe launch: logo lockup, color palette, menu type, window decal, and social profile set.": "מערכת מותג קומפקטית להשקת בית קפה: לוגו, פלטת צבעים, טיפוגרפיית תפריט, מדבקת חלון וסט פרופילים לרשתות.",
+          "Logo rules": "כללי לוגו",
+          "Menu style": "סגנון תפריט",
+          "Storefront mockup": "הדמיית חזית",
+          "More about branding": "עוד על מיתוג",
+          "Boutique hotel welcome pack.": "ערכת קבלת פנים למלון בוטיק.",
+          "A tactile guest bundle with a folded area guide, breakfast card, room insert, and small map for local recommendations.": "חבילת אורחים מוחשית עם מדריך אזור מקופל, כרטיס ארוחת בוקר, כרטיס לחדר ומפה קטנה להמלצות מקומיות.",
+          "Brochure": "ברושור",
+          "Guest cards": "כרטיסי אורחים",
+          "Print files": "קבצי דפוס",
+          "More about print": "עוד על דפוס",
+          "Dead Sea skincare label family.": "משפחת תוויות לטיפוח מים המלח.",
+          "A shelf-ready packaging system for three products with labels, box faces, ingredient hierarchy, and launch mockups.": "מערכת אריזה מוכנה למדף לשלושה מוצרים עם תוויות, חזיתות קופסה, היררכיית רכיבים והדמיות השקה.",
+          "Label system": "מערכת תוויות",
+          "Box mockups": "הדמיות קופסה",
+          "SKU rules": "כללי מוצרים",
+          "More about packaging": "עוד על אריזות",
+          "Fitness studio launch month.": "חודש השקה לסטודיו כושר.",
+          "A punchy campaign set for a new class schedule: offer posts, story frames, retargeting banners, and trainer quote cards.": "סט קמפיין חד ללוח שיעורים חדש: פוסטים להצעות, סטוריז, באנרים לרימרקטינג וכרטיסי ציטוט של מאמנים.",
+          "Feed posts": "פוסטים לפיד",
+          "Story frames": "פריימים לסטורי",
+          "Ad variants": "וריאציות מודעה",
+          "More about ads": "עוד על מודעות",
+          "Local service page library.": "ספריית דפי שירות מקומיים.",
+          "A scalable set of city and service pages with search-friendly structure, proof blocks, FAQs, and simple reporting visuals.": "סט ניתן להרחבה של דפי עיר ושירות עם מבנה ידידותי לחיפוש, בלוקי הוכחה, שאלות נפוצות וויזואליות פשוטה לדוחות.",
+          "Page templates": "תבניות דפים",
+          "FAQ blocks": "בלוקי שאלות",
+          "Report visuals": "ויזואליות לדוחות",
+          "More about growth": "עוד על צמיחה",
+          "Ways to work": "דרכי עבודה",
+          "Clear ways to start.": "דרכים ברורות להתחיל.",
+          "Choose the lane closest to what you need. Scope can stay focused or grow into a fuller design system.": "בחרו את המסלול שהכי קרוב למה שאתם צריכים. ההיקף יכול להישאר ממוקד או לגדול למערכת עיצוב מלאה יותר.",
+          "Launch Site": "אתר השקה",
+          "Starter": "Starter",
+          "For a focused site, landing page, or refresh that needs to get online quickly.": "לאתר ממוקד, דף נחיתה או רענון שצריך לעלות מהר.",
+          "One-page or small multi-section website": "אתר עמוד אחד או אתר קטן עם כמה אזורים",
+          "Responsive layout and launch setup": "עיצוב רספונסיבי והכנה לעלייה לאוויר",
+          "Basic SEO structure and analytics handoff": "מבנה SEO בסיסי וחיבור מדידה",
+          "Brand + Web": "מותג + אתר",
+          "Core": "Core",
+          "The main offer: identity, site structure, sample visuals, and conversion-ready content blocks.": "המסלול המרכזי: זהות, מבנה אתר, ויזואליות לדוגמא ובלוקים שמוכנים להמרות.",
+          "Visual identity direction and sample system": "כיוון זהות ויזואלית ומערכת דוגמאות",
+          "Website, samples grid, reviews, and calls to action": "אתר, גריד דוגמאות, ביקורות וקריאות לפעולה",
+          "Copy structure for services and calls to action": "מבנה טקסט לשירותים ולקריאות לפעולה",
+          "Design Desk": "Design Desk",
+          "Ongoing": "Ongoing",
+          "Monthly support for brands that always need new visual material.": "תמיכה חודשית למותגים שתמיד צריכים חומרים ויזואליים חדשים.",
+          "Ads, social, decks, print, and site updates": "מודעות, רשתות, מצגות, דפוס ועדכוני אתר",
+          "Priority queue and reusable brand assets": "עדיפות בתור ונכסי מותג לשימוש חוזר",
+          "Monthly review and next-priority planning": "סקירה חודשית ותכנון הצעד הבא",
+          "Process": "תהליך",
+          "Simple enough to understand. Structured enough to finish.": "פשוט להבנה. מסודר מספיק כדי לסיים.",
+          "The workflow should make design feel manageable instead of mysterious.": "התהליך נועד להפוך עיצוב למשהו ברור ונוח, לא מסתורי.",
+          "Collect": "איסוף",
+          "Goals, references, offers, current assets, competitors, and must-have functions.": "מטרות, רפרנסים, הצעות, נכסים קיימים, מתחרים ופונקציות חובה.",
+          "Map": "מיפוי",
+          "Decide the structure, priority offer, must-have visuals, and the clearest path to contact.": "קובעים מבנה, הצעה מרכזית, ויזואליות חובה והדרך הברורה ביותר ליצירת קשר.",
+          "Make": "בנייה",
+          "Design the visuals, build the pages, and turn samples into reusable systems.": "מעצבים את הוויזואליות, בונים את הדפים והופכים דוגמאות למערכות שימושיות.",
+          "Launch": "השקה",
+          "Publish, test, verify mobile, connect tracking, and plan the next improvement.": "מעלים לאוויר, בודקים, מאמתים במובייל, מחברים מדידה ומתכננים את השיפור הבא.",
+          "Review wall": "ביקורות",
+          "Trust should feel specific.": "אמון צריך להרגיש ספציפי.",
+          "A few direct notes are stronger than a long wall of placeholder praise.": "כמה הערות מדויקות חזקות יותר מקיר ארוך של מחמאות כלליות.",
+          "Excellent": "מצוין",
+          "5.0": "5.0",
+          "Write a review": "כתבו ביקורת",
+          "Agency Owner": "בעל סוכנות",
+          "The new site finally explains what we do, shows the work, and gives prospects a clear reason to call.": "האתר החדש סוף סוף מסביר מה אנחנו עושים, מציג את העבודה ונותן ללקוחות פוטנציאליים סיבה ברורה להתקשר.",
+          "Medical Clinic": "קליניקה רפואית",
+          "Everything from the service pages to the print pieces now feels like one brand instead of random files.": "הכול, מדפי השירות ועד חומרי הדפוס, מרגיש עכשיו כמו מותג אחד במקום קבצים אקראיים.",
+          "Retail Brand": "מותג קמעונאי",
+          "The packaging mockups and ad creative helped us see the product line before we spent money printing.": "הדמיות האריזה והמודעות עזרו לנו לראות את קו המוצרים לפני שהוצאנו כסף על הדפסה.",
+          "Quick answers before we start.": "תשובות קצרות לפני שמתחילים.",
+          "Can you handle both the website and the design assets?": "אפשר לטפל גם באתר וגם בחומרי העיצוב?",
+          "Yes. The goal is one connected visual system across the site, brand, print pieces, social graphics, ads, and launch material.": "כן. המטרה היא מערכת ויזואלית אחת שמחברת בין האתר, המותג, חומרי הדפוס, הגרפיקות לרשתות, המודעות וחומרי ההשקה.",
+          "What if I only need one thing?": "מה אם אני צריך רק דבר אחד?",
+          "That works. A project can start with a landing page, logo refresh, menu, brochure, packaging label, or campaign pack.": "זה לגמרי בסדר. פרויקט יכול להתחיל מדף נחיתה, רענון לוגו, תפריט, ברושור, תווית אריזה או סט קמפיין.",
+          "Do I need everything ready before contacting you?": "צריך שהכול יהיה מוכן לפני שיוצרים קשר?",
+          "No. Send what you have: goals, old files, references, photos, notes, or even a rough idea. The first step is organizing the direction.": "לא. שלחו מה שיש: מטרות, קבצים ישנים, רפרנסים, תמונות, הערות או אפילו רעיון גולמי. הצעד הראשון הוא לסדר את הכיוון.",
+          "Can the package change after we talk?": "החבילה יכולה להשתנות אחרי שנדבר?",
+          "Absolutely. The package is just a starting lane. After a short review, the scope can be trimmed, expanded, or split into phases.": "בהחלט. החבילה היא רק נקודת התחלה. אחרי סקירה קצרה אפשר לצמצם, להרחיב או לחלק את ההיקף לשלבים.",
+          "Next step": "הצעד הבא",
+          "Start with the piece your business needs next.": "התחילו מהדבר הבא שהעסק שלכם צריך.",
+          "Send a few details and we will point you toward the clearest first move.": "שלחו כמה פרטים ונכוון אתכם לצעד הראשון הכי ברור.",
+          "Start a project": "התחילו פרויקט",
+          "View samples": "ראו דוגמאות",
+          "Tell us what you need designed.": "ספרו לנו מה צריך לעצב.",
+          "Send a few details and we will reply with the best next step.": "שלחו כמה פרטים ונחזור אליכם עם הצעד הבא המתאים.",
+          "Name": "שם",
+          "Email": "אימייל",
+          "Phone": "טלפון",
+          "Project type": "סוג פרויקט",
+          "Choose one": "בחרו אפשרות",
+          "Website or landing page": "אתר או דף נחיתה",
+          "Branding or logo system": "מיתוג או מערכת לוגו",
+          "Print, packaging, or sales material": "דפוס, אריזות או חומרי מכירה",
+          "Ads, social, or growth creative": "מודעות, רשתות או קריאייטיב לצמיחה",
+          "Not sure yet": "עדיין לא בטוח",
+          "Project details": "פרטי הפרויקט",
+          "Send request": "שליחת בקשה",
+          "Websites, branding, print, packaging, social creative, SEO, and design support.": "אתרים, מיתוג, דפוס, אריזות, קריאייטיב לרשתות, SEO ותמיכת עיצוב.",
+          "Websites / Branding / Print / Packaging / Social / SEO / Websites / Branding / Print / Packaging / Social / SEO /": "אתרים / מיתוג / דפוס / אריזות / רשתות / SEO / אתרים / מיתוג / דפוס / אריזות / רשתות / SEO /",
+          "What are you trying to make, fix, or launch?": "מה אתם מנסים ליצור, לתקן או להשיק?",
+          "Change language": "שינוי שפה",
+          "Close contact form": "סגירת טופס יצירת קשר"
+        }
+      };
+
+      const languageMenu = document.querySelector("[data-language-menu]");
+      const languageToggle = document.querySelector("[data-language-toggle]");
+      const languageOptions = document.querySelectorAll("[data-language-option]");
+
+      const normalizeText = (value) => value.trim().replace(/\s+/g, " ");
+
+      const textNodes = [];
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!normalizeText(node.nodeValue)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+
+          if (node.parentElement?.closest("script, style, [data-no-translate]")) {
+            return NodeFilter.FILTER_REJECT;
+          }
+
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        textNodes.push({
+          node,
+          key: normalizeText(node.nodeValue),
+          leading: node.nodeValue.match(/^\s*/)[0],
+          trailing: node.nodeValue.match(/\s*$/)[0]
+        });
+      }
+
+      const translatableAttributes = [];
+
+      document.querySelectorAll("[placeholder], [aria-label], [alt]").forEach((element) => {
+        ["placeholder", "aria-label", "alt"].forEach((attribute) => {
+          const value = element.getAttribute(attribute);
+
+          if (value) {
+            translatableAttributes.push({
+              element,
+              attribute,
+              key: normalizeText(value)
+            });
+          }
+        });
+      });
+
+      const setLanguage = (language) => {
+        const activeLanguage = languageMeta[language] ? language : "en";
+        const map = translations[activeLanguage] || {};
+        const meta = languageMeta[activeLanguage];
+        const isHebrew = meta.dir === "rtl";
+
+        document.documentElement.lang = meta.lang;
+        document.documentElement.dir = meta.dir;
+        localStorage.setItem("gdi-language", activeLanguage);
+
+        textNodes.forEach(({ node, key, leading, trailing }) => {
+          node.nodeValue = `${leading}${map[key] || key}${trailing}`;
+        });
+
+        translatableAttributes.forEach(({ element, attribute, key }) => {
+          element.setAttribute(attribute, map[key] || key);
+        });
+
+        languageToggle.textContent = meta.flag;
+        languageToggle.setAttribute("aria-label", map["Change language"] || "Change language");
+
+        languageOptions.forEach((option) => {
+          option.classList.toggle("is-active", option.dataset.languageOption === activeLanguage);
+        });
+      };
+
+      const animateLanguageChange = () => {
+        document.body.classList.remove("language-changing");
+        languageToggle.classList.remove("is-stamping");
+
+        window.requestAnimationFrame(() => {
+          document.body.classList.add("language-changing");
+          languageToggle.classList.add("is-stamping");
+
+          window.setTimeout(() => {
+            document.body.classList.remove("language-changing");
+            languageToggle.classList.remove("is-stamping");
+          }, 820);
+        });
+      };
+
+      languageToggle.addEventListener("click", () => {
+        const isOpen = languageMenu.classList.toggle("is-open");
+        languageToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      languageOptions.forEach((option) => {
+        option.addEventListener("click", () => {
+          animateLanguageChange();
+          setLanguage(option.dataset.languageOption);
+          languageMenu.classList.remove("is-open");
+          languageToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!languageMenu.contains(event.target)) {
+          languageMenu.classList.remove("is-open");
+          languageToggle.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      setLanguage(localStorage.getItem("gdi-language") || "en");
+
       const nav = document.querySelector("[data-nav]");
       let lastScroll = window.scrollY;
 
@@ -1582,12 +1964,9 @@
         ".section-head",
         ".sample-card",
         ".proof-stat",
-        ".logo-cell",
         ".package",
         ".step",
         ".review-card",
-        ".case-card",
-        ".service-row",
         ".faq-grid details",
         ".final-cta .eyebrow",
         ".final-cta h2",
